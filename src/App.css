@@ -2,3 +2,15 @@
   text-align: center;
 }
 
+button{
+	display: block;
+	margin: 20px  auto;
+	border-radius: 10px;
+	background-color: #4CAF50;
+}
+
+.personWrapper{
+	border: 1px solid #bbb;
+	box-shadow: 0 2px 3px #ccc;
+	margin: 20px;
+}
