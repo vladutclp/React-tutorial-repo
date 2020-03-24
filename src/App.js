@@ -7,7 +7,7 @@ import Person from './Person/Person.js';
 
 class App extends Component{
 
-
+  // State of our component
    state = {
       persons: [
         { name: "Claps", age:25, id: 1, hidden: false },
@@ -18,6 +18,7 @@ class App extends Component{
       hiddenDiv: false
     }
 
+    // Class method used to change the state of the name field from person object
     switchNameHandler = (newName) =>{
       this.setState({
         persons:[
@@ -29,19 +30,86 @@ class App extends Component{
     }
 
 
-    nameChangedHandler = (event) =>{
-      this.setState({
-        persons:[
-          { name: "Claps",             age:25 },
-          { name: event.target.value,  age:11 },
-          { name: "Kalos",             age:21 }
-        ]
-      })
+    nameChangedHandler = (event, id) =>{
+
+      const personIndex = this.state.persons.findIndex( personId => { //finds an element that safisfies the condition
+        return personId.id === id;  // below. If the person id === passedId the function returns the index of that element
+      });
+
+      const person = {
+        ...this.state.persons[personIndex]
+      };
+
+      person.name = event.target.value; // change the name of the person
+
+      const persons = [...this.state.persons]; // the persons aray
+      persons[personIndex] = person;
+     // const person = this.state.persons[personIndex];
+      console.log(person);
+      //const person = Object.assign({}, this.state.persons[personIndex]);
+      this.setState({ persons: persons });
       console.log(event);
     }
 
+    togglePersonsHandler = () => {
+      const hiddenDiv = this.state.hiddenDiv;
+      this.setState({ hiddenDiv: !hiddenDiv });
+    }
+
+    deletePersonHandler = (personIndex) => {
+      //const persons = this.state.persons.slice();//copy the full array  
+      const persons = [...this.state.persons]; // copy the persons array using the spread operator
+      persons.splice(personIndex, 1); //remove from position personIndex 1 element
+      this.setState({persons: persons})
+    }
+
+  render(){
+
+    const style = {
+      backgroundColor: '#4CAF50',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer',
+      color: 'white',
+      outline: 'none'
+    };
+
+    let person = null;
+    if(this.state.hiddenDiv){
+      person = (
+          <div>
+          {this.state.persons.map((person, index) => {
+            return (<Person 
+            name={person.name}
+            age={person.age}
+            click={()=>this.deletePersonHandler(index)}
+            key={person.id}
+            changed={(event) => this.nameChangedHandler(event, person.id)} // Change only one specific person
+             />);}
+          )}
+            
+          </div>
+      );
+    }
+
+    return(
+      <div className="App">
+        <h1>Hi I'm a React App </h1>
+        <button style={style}
+        onClick={this.togglePersonsHandler}>Switch name</button>
+        {person}
+      </div>
+    )
+  }
+}
+ 
+
+/*
+
     togglePersonsHandler = (event) => {
 
+      
         const btnId = event.target.id;
         switch(btnId){
           case "0":
@@ -78,50 +146,10 @@ class App extends Component{
             break;
         }
         
-          /*
-          const hiddenDiv = this.state.hiddenDiv
-          this.setState({
-            hiddenDiv: !hiddenDiv
-          })
-          */
-      console.log(event.target.id);
-    }
+          
+          
+      //console.log(event.target.id);
 
-  render(){
-
-    const style = {
-      backgroundColor: '#4CAF50',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer',
-      color: 'white',
-      outline: 'none'
-    };
-/*
-    return(
-      <div className="App">
-        <h1>Hi I m a React App </h1>
-        <button style={style}
-        onClick={this.togglePersonsHandler}>Switch name</button>
-        {
-          this.state.hiddenDiv === true && this.state.person[0].id ===1 ? 
-          <div>
-            <Person name={this.state.persons[0].name} 
-                    age={this.state.persons[0].age} />
-            <Person name={this.state.persons[1].name} 
-                    age={this.state.persons[1].age} 
-                    click={this.switchNameHandler.bind(this, 'Hydoxiapalytaxe')}
-                    changed={this.nameChangedHandler}>Hobbies: Photography</Person>
-            <Person name={this.state.persons[2].name} 
-                    age={this.state.persons[2].age} /> 
-          </div> : null
-        }
-      </div>
-    )
-*/  
-
-    
     return(
       <div className="App">
         <h1>Hi I m a React App </h1>
@@ -176,9 +204,9 @@ class App extends Component{
       </div>
     )
   }
-}
 
-/* This is the function-based Component using useState hooks to change the state within the component
+
+ This is the function-based Component using useState hooks to change the state within the component
 const App = props => {
 
     const [ personsState, setPeronsState ] = useState({
