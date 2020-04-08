@@ -2,22 +2,10 @@
 import React, {Component} from 'react';
 import './App.css';
 //import Radium, {StyleRoot} from 'radium';
+// import styled from 'styled-components';
 import Person from './Person/Person.js';
-import styled from 'styled-components';
 
-const StyledButton = styled.button`
-      background-color: ${props => props.changeStyle ? 'red' : '#4CAF50'};
-      font: inherit;
-      border: 1px solid black;
-      padding: 8px;
-      cursor: pointer;
-      color: black;
-      outline: none;
-      &:hover {
-        background-color : ${props => props.changeStyle? 'salmon' : 'lightgreen'};
-        color : white;
-       }
-`;
+
 
 
 class App extends Component{
@@ -80,28 +68,8 @@ class App extends Component{
 
   render(){
     console.log(this.state);
-    // const style = {
-    //   backgroundColor: '#4CAF50',
-    //   font: 'inherit',
-    //   border: '1px solid black',
-    //   padding: '8px',
-    //   cursor: 'pointer',
-    //   color: 'black',
-    //   outline: 'none',
-    //   ":hover": {
-    //     "backgroundColor" : "lightgreen",
-    //     "color" : "white"
-    //   }
-    // };
-
     let person = null;
      if(this.state.hiddenDiv){
-      // style.backgroundColor = 'red';
-      // style.color = 'black';
-      // style[":hover"] = {
-      //   "backgroundColor" : "salmon",
-      //   "color" : "white"
-      // }
       person = (
           <div/*className={this.state.persons.length > 0 ? "personWrapper" : null}>*/>
           {this.state.persons.map((person, index) => {
@@ -127,14 +95,14 @@ class App extends Component{
     if(this.state.persons.length <= 1){
       classes.push('bold');
     }
-  
+
     return(
       
         <div className="App">
           <h1>Hi I'm a React App </h1>
           <p className={classes.join(' ')}>This is working!</p>
-          <StyledButton /*style={style}*/ changeStyle={this.state.hiddenDiv}
-          onClick={this.togglePersonsHandler}>Switch name</StyledButton>
+          <button clasName="button" changeStyle={this.state.hiddenDiv}
+          onClick={this.togglePersonsHandler}>Switch name</button>
           {person}
         </div>
       
@@ -144,147 +112,3 @@ class App extends Component{
  
 
 export default App;
-
-/*
-
-    togglePersonsHandler = (event) => {
-
-      
-        const btnId = event.target.id;
-        switch(btnId){
-          case "0":
-          console.log(btnId);
-            this.setState ({
-              persons: [
-                { name: "Claps", age:25, id: 1, hidden: !this.state.persons[0].hidden },
-                { name: "Hydra", age:22, id: 2, hidden: this.state.persons[1].hidden },
-                { name: "Kalos", age:21, id: 3, hidden: this.state.persons[2].hidden }
-                ]
-            })
-            break;
-          case "1":
-          console.log(btnId);
-            this.setState ({
-              persons: [
-                { name: "Claps", age:25, id: 1, hidden: this.state.persons[0].hidden },
-                { name: "Hydra", age:22, id: 2, hidden: !this.state.persons[1].hidden },
-                { name: "Kalos", age:21, id: 3, hidden: this.state.persons[2].hidden }
-                ]
-            })
-            break;
-          case "2":
-            console.log(btnId);
-            this.setState ({
-              persons: [
-                { name: "Claps", age:25, id: 1, hidden: this.state.persons[0].hidden },
-                { name: "Hydra", age:22, id: 2, hidden: this.state.persons[1].hidden },
-                { name: "Kalos", age:21, id: 3, hidden: !this.state.persons[2].hidden }
-                ]
-            })
-            break;
-          default:
-            break;
-        }
-        
-          
-          
-      //console.log(event.target.id);
-
-    return(
-      <div className="App">
-        <h1>Hi I m a React App </h1>
-
-        <div className="personWrapper"> 
-          <button style={style}
-                  onClick={this.togglePersonsHandler} id="0">{
-            this.state.persons[0].hidden === true ? "Hide me" : "Show me" }
-          </button>
-          
-          {
-            this.state.persons[0].hidden === true && this.state.persons[0].id === 1 ? 
-            <div>
-              <Person name={this.state.persons[0].name} 
-                      age={this.state.persons[0].age} />
-            </div> : null 
-          }
-        </div>
-
-        <div className="personWrapper">
-          <button style={style}
-                  onClick={this.togglePersonsHandler} id="1">{
-            this.state.persons[1].hidden === true ? "Hide me" : "Show me" }
-          </button>
-          
-          {
-            this.state.persons[1].hidden === true && this.state.persons[1].id === 2 ? 
-            <div>
-              <Person name={this.state.persons[1].name} 
-                      age={this.state.persons[1].age} />
-            </div> : null 
-          }
-        </div>
-
-        <div className="personWrapper">
-          <button style={style}
-                  onClick={this.togglePersonsHandler} id="2"> {
-            this.state.persons[2].hidden === true ? "Hide me" : "Show me" }
-          </button>
-          
-          {
-            this.state.persons[2].hidden === true && this.state.persons[2].id === 3 ? 
-            <div>
-              <Person name={this.state.persons[2].name} 
-                      age={this.state.persons[2].age} />
-            </div> : null 
-          }
-        </div>
-
-         
-        
-      </div>
-    )
-  }
-
-
- This is the function-based Component using useState hooks to change the state within the component
-const App = props => {
-
-    const [ personsState, setPeronsState ] = useState({
-        persons: [
-          { name: "Claps", age: 28},
-          { name: "Hydra", age: 22},
-          { name: "Romeo", age: 38}
-        ]
-    });
-
-    const [otherState, setOtherState] = useState("Some other state");
-
-    console.log(personsState);
-    console.log(otherState);
-    const switchNameHandler = () =>{
-    //console.log('Was clicked');
-    // DONT'T DO THIS this.state.persons[0].name = "Clapsky";
-    setPeronsState({ 
-      persons: 
-      [
-        { name: "Clapsonex", age: 28},
-        { name: "Hydra", age: 22},
-        { name: "Romeo", age: 312}
-      ]
-  })
-  };
-
-    return (
-      <div className="App">
-        <h1>Hi I m a React App </h1>
-        <button onClick={switchNameHandler}>Switch name</button>
-        <Person name={personsState.persons[0].name} age={personsState.persons[0].age}/>
-        <Person name={personsState.persons[1].name} age={personsState.persons[1].age}>My hobbies: Photography</Person>
-        <Person name={personsState.persons[2].name} age={personsState.persons[2].age}/>
-      </div>
-    );
-};
-
-export default App;
-*/
-

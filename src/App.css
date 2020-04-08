@@ -21,3 +21,18 @@ button{
 .bold{
 	font-weight: bold;
 }
+
+.button{
+	background-color: red;
+	font: inherit;
+  border: 1px solid black;
+  padding: 8px;
+  cursor: pointer;
+  color: black;
+  outline: none;
+}
+
+.button:hover{
+	background-color: lightgreen;
+  color : white;
+}
