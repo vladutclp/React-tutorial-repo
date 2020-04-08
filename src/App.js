@@ -1,8 +1,23 @@
 //import React, { useState } from 'react';
 import React, {Component} from 'react';
 import './App.css';
+//import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person.js';
+import styled from 'styled-components';
 
+const StyledButton = styled.button`
+      background-color: ${props => props.changeStyle ? 'red' : '#4CAF50'};
+      font: inherit;
+      border: 1px solid black;
+      padding: 8px;
+      cursor: pointer;
+      color: black;
+      outline: none;
+      &:hover {
+        background-color : ${props => props.changeStyle? 'salmon' : 'lightgreen'};
+        color : white;
+       }
+`;
 
 
 class App extends Component{
@@ -29,7 +44,7 @@ class App extends Component{
       })
     }
 
-
+ 
     nameChangedHandler = (event, id) =>{
 
       const personIndex = this.state.persons.findIndex( personId => { //finds an element that safisfies the condition
@@ -45,7 +60,7 @@ class App extends Component{
       const persons = [...this.state.persons]; // the persons aray
       persons[personIndex] = person;
      // const person = this.state.persons[personIndex];
-      console.log(person);
+
       //const person = Object.assign({}, this.state.persons[personIndex]);
       this.setState({ persons: persons });
       console.log(event);
@@ -64,21 +79,31 @@ class App extends Component{
     }
 
   render(){
-
-    const style = {
-      backgroundColor: '#4CAF50',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer',
-      color: 'white',
-      outline: 'none'
-    };
+    console.log(this.state);
+    // const style = {
+    //   backgroundColor: '#4CAF50',
+    //   font: 'inherit',
+    //   border: '1px solid black',
+    //   padding: '8px',
+    //   cursor: 'pointer',
+    //   color: 'black',
+    //   outline: 'none',
+    //   ":hover": {
+    //     "backgroundColor" : "lightgreen",
+    //     "color" : "white"
+    //   }
+    // };
 
     let person = null;
-    if(this.state.hiddenDiv){
+     if(this.state.hiddenDiv){
+      // style.backgroundColor = 'red';
+      // style.color = 'black';
+      // style[":hover"] = {
+      //   "backgroundColor" : "salmon",
+      //   "color" : "white"
+      // }
       person = (
-          <div>
+          <div/*className={this.state.persons.length > 0 ? "personWrapper" : null}>*/>
           {this.state.persons.map((person, index) => {
             return (<Person 
             name={person.name}
@@ -93,17 +118,32 @@ class App extends Component{
       );
     }
 
+    let classes = [];
+
+    if(this.state.persons.length <= 2){
+      classes.push('red');
+    }
+
+    if(this.state.persons.length <= 1){
+      classes.push('bold');
+    }
+  
     return(
-      <div className="App">
-        <h1>Hi I'm a React App </h1>
-        <button style={style}
-        onClick={this.togglePersonsHandler}>Switch name</button>
-        {person}
-      </div>
+      
+        <div className="App">
+          <h1>Hi I'm a React App </h1>
+          <p className={classes.join(' ')}>This is working!</p>
+          <StyledButton /*style={style}*/ changeStyle={this.state.hiddenDiv}
+          onClick={this.togglePersonsHandler}>Switch name</StyledButton>
+          {person}
+        </div>
+      
     )
   }
 }
  
+
+export default App;
 
 /*
 
@@ -248,4 +288,3 @@ const App = props => {
 export default App;
 */
 
-export default App;
