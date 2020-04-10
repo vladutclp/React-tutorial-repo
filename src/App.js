@@ -1,6 +1,6 @@
 //import React, { useState } from 'react';
 import React, {Component} from 'react';
-import './App.css';
+import classes from './App.module.css';
 //import Radium, {StyleRoot} from 'radium';
 // import styled from 'styled-components';
 import Person from './Person/Person.js';
@@ -15,7 +15,10 @@ class App extends Component{
       persons: [
         { name: "Claps", age:25, id: 1, hidden: false },
         { name: "Hydra", age:22, id: 2, hidden: false },
-        { name: "Kalos", age:21, id: 3, hidden: false }
+        { name: "Kalos", age:21, id: 3, hidden: false },
+        { name: "Claps", age:24, id: 4, hidden: false },
+        { name: "Hydra", age:22, id: 5, hidden: false },
+        { name: "Kalos", age:21, id: 6, hidden: false }
       ],
       otherState: "some other state",
       hiddenDiv: false
@@ -67,6 +70,7 @@ class App extends Component{
     }
 
   render(){
+    let btnClass = [classes.Button];
     console.log(this.state);
     let person = null;
      if(this.state.hiddenDiv){
@@ -84,24 +88,27 @@ class App extends Component{
             
           </div>
       );
+
+      btnClass.push(classes.Red);
     }
 
-    let classes = [];
+    let assignedClasses = [];
 
     if(this.state.persons.length <= 2){
-      classes.push('red');
+      assignedClasses.push(classes.red);
     }
 
     if(this.state.persons.length <= 1){
-      classes.push('bold');
+      assignedClasses.push(classes.bold);
     }
 
+    console.log(btnClass);
     return(
       
-        <div className="App">
+        <div className={classes.App}>
           <h1>Hi I'm a React App </h1>
-          <p className={classes.join(' ')}>This is working!</p>
-          <button clasName="button" changeStyle={this.state.hiddenDiv}
+          <p className={assignedClasses.join(' ')}>This is working!</p>
+          <button className={btnClass.join(' ')} 
           onClick={this.togglePersonsHandler}>Switch name</button>
           {person}
         </div>

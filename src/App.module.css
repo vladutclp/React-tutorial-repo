@@ -1,6 +1,6 @@
 .App{
   text-align: center;
-
+  
 }
 
 button{
@@ -23,9 +23,9 @@ button{
 	font-weight: bold;
 }
 
-.button{
-  background-color: red;
-  font: inherit;
+.Button{
+	background-color: red;
+	font: inherit;
   border: 1px solid black;
   padding: 8px;
   cursor: pointer;
@@ -33,7 +33,17 @@ button{
   outline: none;
 }
 
-.button:hover{
+.Button:hover{
+	background-color: salmon;
+  color : white;
+}
+
+.Button.Red{
+	background-color: green;
+  color : white;
+}
+
+.Button.Red:hover{
 	background-color: lightgreen;
   color : white;
 }
