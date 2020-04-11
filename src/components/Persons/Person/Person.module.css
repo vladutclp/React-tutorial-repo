@@ -1,5 +1,5 @@
 .Person{
- 	width: 60%;
+ 	width: 100%;
  	margin: 16px auto;
  	border: 1px solid #eee;
  	box-shadow: 0 2px 3px #ccc;
@@ -32,4 +32,10 @@ input[type="text"]{
 	color: black;
 	font-weight: 900;
 	text-transform: uppercase;
+}
+
+@media (min-width: 500px) {
+	.Person{
+		width: 450px;
+	}
 }

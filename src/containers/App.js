@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import classes from './App.module.css';
 //import Radium, {StyleRoot} from 'radium';
 // import styled from 'styled-components';
-import Person from './Person/Person.js';
+import Person from '../components/Persons/Person/Person.js';
 
 
 
