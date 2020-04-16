@@ -1,60 +1,42 @@
-import React from 'react';
+import React, {Component} from 'react';
 import classes from './Person.module.css';
-//import Radium from 'radium';
-// import styled from 'styled-components';
-// const StyledDiv = styled.div`
-// 	width: 60%;
-// 	margin: 16px auto;
-// 	border: 1px solid #eee;
-// 	box-shadow: 0 2px 3px #ccc;
-// 	padding: 16px;
-// 	text-align: center;
-// 	font-weight: 800;
-// 	@media (min-width: 500px) {
-// 		width: 450px;
-// 	}
-// 	font-size: 1.5rem;
-// 	&:nth-of-type(odd){
-// 		background-color: #E00822;
-// 		color: white;
-// 		font-weight: 800;
-// 	}
+import {TransitionGroup, CSSTransition} from "react-transition-group";
+import Aux from '../../../hoc/Aux.js';
+import withClass from '../../../hoc/WithClass.js';
+import AuthContext from '../../../context/auth-context.js';
 
-// 	background-color: #2FF8AA;
-	
-// 	input[type="text"]{
-// 		font-size: 1.2rem;
-// 		font-weight: 600;
-// 		height: 50px;
-// 		margin-bottom: 10%;
-// 		text-align: center;
-// 		width: 100%;
-// 	}
-// `;
+class Person extends Component {
 
-const person = (props) => {
-
-	// const style = {
-	// 	'@media (min-width: 500px)':{
-	// 		width: '450px'
-	// 	}
-	// }	
-	let persClas = [classes.Person];
-	if(props.age % 2){
-		persClas.push(classes.Green);
+	constructor(props){
+		super(props);
+		this.inputElementRef = React.createRef();
 	}
-	else{
-		persClas.push(classes.Yellow);
+
+	static contextType = AuthContext;
+
+	componentDidMount(){
+		this.inputElementRef.current.classList.add(classes.Blue);
 	}
+
+	render(){
+
+	 let persClas = [classes.Person];
+		if(this.props.age % 2){
+			persClas.push(classes.Green);
+		}
+		else{
+			persClas.push(classes.Yellow);
+		}
+
 	return (
-		<div className={persClas.join(' ')}>
-			<p onClick={props.click}> I'm {props.name} and I am {props.age} years old! </p>
-			<p>{props.children}</p>
-			<input type="text" onChange={props.changed} value={props.name}/>
-
-		</div>
-	)
+		<Aux>
+			{this.context.authenticated ? <p>Authenticated</p> : <p>Please log in</p>}
+			<p onClick={this.props.click} ref={this.inputElementRef}> I'm {this.props.name} and I am {this.props.age} years old! </p>
+			<p >{this.props.children}</p>
+			<input type="text" onChange={this.props.changed} value={this.props.name}/>
+		</Aux>
+	)};
 
 };
 
-export default person;
+export default withClass(Person, classes.Person);

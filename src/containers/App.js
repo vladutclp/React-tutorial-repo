@@ -1,27 +1,25 @@
-//import React, { useState } from 'react';
 import React, {Component} from 'react';
 import classes from './App.module.css';
-//import Radium, {StyleRoot} from 'radium';
-// import styled from 'styled-components';
-import Person from '../components/Persons/Person/Person.js';
-
-
-
-
+import Persons from '../components/Persons/Persons.js'
+import Cockpit from '../components/Cockpit/Cockpit.js'
+import withClass from '../hoc/WithClass.js';
+import Aux from '../hoc/Aux.js';
+import AuthContext from '../context/auth-context.js';
 class App extends Component{
 
   // State of our component
    state = {
       persons: [
-        { name: "Claps", age:25, id: 1, hidden: false },
-        { name: "Hydra", age:22, id: 2, hidden: false },
-        { name: "Kalos", age:21, id: 3, hidden: false },
-        { name: "Claps", age:24, id: 4, hidden: false },
-        { name: "Hydra", age:22, id: 5, hidden: false },
-        { name: "Kalos", age:21, id: 6, hidden: false }
+        { name: "Claps", age:25, id: 1, hidden: false, toDelete: false },
+        { name: "Hydra", age:22, id: 2, hidden: false, toDelete: false },
+        { name: "Kalos", age:21, id: 3, hidden: false, toDelete: false }
+       // { name: "Claps", age:24, id: 4, hidden: false, toDelete: false }
+       // { name: "Hydra", age:22, id: 5, hidden: false, toDelete: false },
+        //{ name: "Kalos", age:21, id: 6, hidden: false, toDelete: false }
       ],
       otherState: "some other state",
-      hiddenDiv: false
+      hiddenDiv: false,
+      authenticated: false
     }
 
     // Class method used to change the state of the name field from person object
@@ -35,6 +33,13 @@ class App extends Component{
       })
     }
 
+    loginHandler = () =>{
+      this.setState({authenticated: true});
+    }
+
+    loginOutHandler = () =>{
+      this.setState({authenticated: false});
+    }
  
     nameChangedHandler = (event, id) =>{
 
@@ -70,52 +75,38 @@ class App extends Component{
     }
 
   render(){
-    let btnClass = [classes.Button];
-    console.log(this.state);
-    let person = null;
+
+
+    let persons = null;
      if(this.state.hiddenDiv){
-      person = (
+      persons = (
           <div/*className={this.state.persons.length > 0 ? "personWrapper" : null}>*/>
-          {this.state.persons.map((person, index) => {
-            return (<Person 
-            name={person.name}
-            age={person.age}
-            click={()=>this.deletePersonHandler(index)}
-            key={person.id}
-            changed={(event) => this.nameChangedHandler(event, person.id)} // Change only one specific person
-             />);}
-          )}
+          <Persons 
+          persons={this.state.persons} 
+          clicked={this.deletePersonHandler}
+          changed={this.nameChangedHandler}
+          />
             
           </div>
       );
 
-      btnClass.push(classes.Red);
     }
-
-    let assignedClasses = [];
-
-    if(this.state.persons.length <= 2){
-      assignedClasses.push(classes.red);
-    }
-
-    if(this.state.persons.length <= 1){
-      assignedClasses.push(classes.bold);
-    }
-
-    console.log(btnClass);
     return(
       
-        <div className={classes.App}>
-          <h1>Hi I'm a React App </h1>
-          <p className={assignedClasses.join(' ')}>This is working!</p>
-          <button className={btnClass.join(' ')} 
-          onClick={this.togglePersonsHandler}>Switch name</button>
-          {person}
-        </div>
-      
+      <Aux>
+        <AuthContext.Provider value={{authenticated: this.state.authenticated, 
+          login: this.loginHandler,
+          logout: this.loginOutHandler}}>
+          <Cockpit clicked={this.togglePersonsHandler} 
+          length={this.state.persons.length}
+          showPerson={this.state.hiddenDiv}
+          title={this.props.title}/>
+          {persons}
+       </AuthContext.Provider>
+      </Aux> 
     )
   }
 }
  
 
-export default App;
+export default withClass(App, classes.App);
